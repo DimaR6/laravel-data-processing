@@ -1,18 +1,23 @@
 # Laravel Data Processing Services
 
-This repository contains example implementations of data processing services in Laravel:
+This repository contains example implementations of data processing services in Laravel.
 
 ## Features
 
-- Time Series Analysis Service
-  - Anomaly detection using z-score
-  - Caching implementation
-  - Error handling
+### Metric Aggregation Service
+- Supports various grouping options (hourly, daily, weekly, monthly)
+- Utilizes the DTO pattern for data structuring
+- Provides flexible period filtering
 
-- Metric Aggregation Service
-  - Multiple grouping options (hourly, daily, weekly, monthly)
-  - DTO pattern implementation
-  - Flexible period filtering
+### Large Data Export
+- The `LargeDataExportJob` class handles large dataset exports asynchronously using a queue
+- Includes progress tracking functionality to keep clients informed about the export status
+- The progress is stored in the cache and can be accessed using the `progress()` method
+
+### Crypto Wallet Factory
+- The `CryptoWalletFactory` allows you to create and manage different types of cryptocurrency wallets
+- Supports easy integration of new wallet types by updating the configuration
+- Decouples your application's cryptocurrency functionality from the underlying wallet implementations
 
 ## Installation
 
@@ -39,18 +44,30 @@ php artisan migrate
 
 ## Usage
 
-Example usage of the Time Series Analysis Service:
-
-```php
-$service = new TimeSeriesAnalysisService();
-$anomalies = $service->detectAnomalies($dataPoints);
-```
-
-Example usage of the Metric Aggregation Service:
-
+### Metric Aggregation Service
 ```php
 $service = new MetricAggregationService();
 $metrics = $service->aggregateMetrics($startDate, $endDate, 'daily');
+```
+
+### Large Data Export
+```php
+$job = dispatch(new LargeDataExportJob(
+    User::class,
+    ['active' => true, 'created_at' => '2023-01-01'],
+    storage_path('exports/users.csv')
+));
+
+$progress = $job->progress();
+```
+
+### Crypto Wallet Factory
+```php
+$walletFactory = app(CryptoWalletFactory::class);
+$wallet = $walletFactory->create('bitcoin');
+
+$balance = $wallet->getBalance();
+$transaction = $wallet->sendTransaction($recipient, $amount);
 ```
 
 ## License

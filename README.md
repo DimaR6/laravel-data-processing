@@ -74,7 +74,7 @@ $progress = $job->progress();
     $code = $withdraw->crypto->code;
     $blockchainConnection = $this->walletFactory->createWalletInstance($code);
 
-     $blockchainConnection->getBalance();
+    $blockchainConnection->getBalance();
 
 ```
 

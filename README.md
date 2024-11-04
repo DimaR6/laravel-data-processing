@@ -63,11 +63,19 @@ $progress = $job->progress();
 
 ### Crypto Wallet Factory
 ```php
-$walletFactory = app(CryptoWalletFactory::class);
-$wallet = $walletFactory->create('bitcoin');
 
-$balance = $wallet->getBalance();
-$transaction = $wallet->sendTransaction($recipient, $amount);
+    private $walletFactory;
+
+    public function __construct(WalletFactory $walletFactory)
+    {
+        $this->walletFactory = $walletFactory;
+    }
+
+    $code = $withdraw->crypto->code;
+    $blockchainConnection = $this->walletFactory->createWalletInstance($code);
+
+     $blockchainConnection->getBalance();
+
 ```
 
 ## License
